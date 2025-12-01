@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, Lightbulb, AlertTriangle, BookOpen, Code, Zap, Shield, DollarSign, Server } from 'lucide-react';
+import { Lightbulb, AlertTriangle, BookOpen, Code, Zap, Shield, DollarSign, Server } from 'lucide-react';
 
 export const EC2Help: React.FC = () => {
     return (

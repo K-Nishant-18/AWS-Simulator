@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, Lightbulb, AlertTriangle, BookOpen, Code, Zap, Shield, DollarSign, Database } from 'lucide-react';
+import { Lightbulb, AlertTriangle, BookOpen, Code, Zap, Shield, DollarSign, Database } from 'lucide-react';
 
 export const RDSHelp: React.FC = () => {
     return (

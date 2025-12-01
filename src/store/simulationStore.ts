@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { SimulationState, S3Bucket, EC2Instance, SecurityGroup, IAMUser, IAMRole, RDSInstance, HostedZone, DNSRecord, LoadBalancer, TargetGroup, MFADevice, AccessKey, SecurityRecommendation } from '../types/aws';
+import type { SimulationState, S3Bucket, EC2Instance, SecurityGroup, IAMUser, IAMRole, RDSInstance, HostedZone, DNSRecord, LoadBalancer, TargetGroup, SecurityRecommendation } from '../types/aws';
 
 interface SimulationStore extends SimulationState {
     // S3 Actions
@@ -587,6 +587,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
         const newInstance: RDSInstance = {
             dbInstanceIdentifier: identifier,
             engine,
+            engineVersion: engine === 'mysql' ? '8.0.35' : '15.4',
             instanceClass: 'db.t3.micro',
             status: 'available', // Simplified: instant creation
             masterUsername: username,
@@ -594,6 +595,12 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
             port: engine === 'mysql' ? 3306 : 5432,
             securityGroups: ['sg-default'],
             allocatedStorage: 20,
+            multiAZ: false,
+            publiclyAccessible: false,
+            backupRetentionPeriod: 7,
+            createdAt: new Date(),
+            parameterGroup: 'default',
+            subnetGroup: 'default',
         };
         set((state) => ({
             rds: {

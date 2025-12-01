@@ -127,4 +127,21 @@ export class LabValidator {
 
         return { success: true, message: 'Great work! Your Load Balancer is set up and routing traffic to targets.' };
     }
+
+    // RDS Lab: Database Setup
+    static validateRDSLab(state: SimulationState): ValidationResult {
+        // 1. Check for RDS Instance
+        if (state.rds.instances.length === 0) {
+            return { success: false, message: 'No RDS instance found. Create a database instance.' };
+        }
+
+        const instance = state.rds.instances[0];
+
+        // 2. Check if instance is available
+        if (instance.status !== 'available') {
+            return { success: false, message: `Database instance '${instance.dbInstanceIdentifier}' is not available yet. Wait for it to become available.` };
+        }
+
+        return { success: true, message: 'Success! You have created and configured an RDS database instance.' };
+    }
 }

@@ -4,7 +4,7 @@ import { useSimulationStore } from '../store/simulationStore';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { Modal } from '../components/Modal';
-import { Tooltip } from '../components/Tooltip';
+
 import { Card } from '../components/Card';
 
 export const RDSConsole: React.FC = () => {
@@ -226,8 +226,8 @@ export const RDSConsole: React.FC = () => {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id as any)}
                                 className={`px-6 py-4 font-medium text-sm whitespace-nowrap border-b-2 transition-all duration-200 flex items-center gap-2 ${isActive
-                                        ? 'border-aws-orange text-aws-orange bg-orange-50/50'
-                                        : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                                    ? 'border-aws-orange text-aws-orange bg-orange-50/50'
+                                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                                     }`}
                             >
                                 <Icon size={18} className={isActive ? 'text-aws-orange' : 'text-gray-500'} />
@@ -300,9 +300,9 @@ export const RDSConsole: React.FC = () => {
                                             </td>
                                             <td className="p-4">
                                                 <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${db.status === 'available' ? 'bg-green-100 text-green-800' :
-                                                        db.status === 'creating' ? 'bg-blue-100 text-blue-800' :
-                                                            db.status === 'backing-up' ? 'bg-yellow-100 text-yellow-800' :
-                                                                'bg-gray-100 text-gray-800'
+                                                    db.status === 'creating' ? 'bg-blue-100 text-blue-800' :
+                                                        db.status === 'backing-up' ? 'bg-yellow-100 text-yellow-800' :
+                                                            'bg-gray-100 text-gray-800'
                                                     }`}>
                                                     {db.status === 'available' && <CheckCircle2 size={12} />}
                                                     {db.status === 'creating' && <Clock size={12} className="animate-spin" />}
@@ -403,7 +403,7 @@ export const RDSConsole: React.FC = () => {
                                             </td>
                                             <td className="p-4">
                                                 <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${snapshot.status === 'available' ? 'bg-green-100 text-green-800' :
-                                                        'bg-blue-100 text-blue-800'
+                                                    'bg-blue-100 text-blue-800'
                                                     }`}>
                                                     {snapshot.status === 'available' && <CheckCircle2 size={12} />}
                                                     {snapshot.status === 'creating' && <Clock size={12} className="animate-spin" />}
@@ -535,8 +535,8 @@ export const RDSConsole: React.FC = () => {
                                     key={eng.value}
                                     onClick={() => setEngine(eng.value as any)}
                                     className={`border rounded-lg p-4 text-center transition-all ${engine === eng.value
-                                            ? 'border-aws-orange bg-orange-50 ring-2 ring-aws-orange'
-                                            : 'border-gray-200 hover:border-gray-400'
+                                        ? 'border-aws-orange bg-orange-50 ring-2 ring-aws-orange'
+                                        : 'border-gray-200 hover:border-gray-400'
                                         }`}
                                 >
                                     <div className="text-3xl mb-2">{eng.icon}</div>

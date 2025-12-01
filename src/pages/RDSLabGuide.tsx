@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Circle, AlertCircle, Check, BookOpen, Lightbulb, Terminal, AlertTriangle, Info, Database } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Check, Info, Database } from 'lucide-react';
 import { useSimulationStore } from '../store/simulationStore';
 import { LabValidator } from '../services/labValidator';
 import { Button } from '../components/Button';

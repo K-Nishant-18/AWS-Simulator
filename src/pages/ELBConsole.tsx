@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Network, Plus, Server, X } from 'lucide-react';
+import { Network, Plus, Server } from 'lucide-react';
 import { useSimulationStore } from '../store/simulationStore';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';

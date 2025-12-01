@@ -8,8 +8,7 @@ interface SecurityRecommendationsProps {
 }
 
 export const SecurityRecommendations: React.FC<SecurityRecommendationsProps> = ({
-    recommendations,
-    onActionClick
+    recommendations
 }) => {
     if (recommendations.length === 0) {
         return (

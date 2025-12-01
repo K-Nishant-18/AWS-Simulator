@@ -5,10 +5,10 @@ import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { Modal } from '../components/Modal';
 import { Tooltip } from '../components/Tooltip';
-import { Users, UserPlus, Shield, Key, Lock, UserCheck, UsersRound, FileText, Plus, AlertTriangle } from 'lucide-react';
+import { Users, UserPlus, Shield, Key, Lock, UserCheck, UsersRound, FileText, AlertTriangle } from 'lucide-react';
 
 export const IAMConsole: React.FC = () => {
-    const { iam, createUser, createGroup, attachPolicyToUser, addUserToGroup, deleteUser } = useSimulationStore();
+    const { iam, createUser, createGroup, attachPolicyToUser, addUserToGroup } = useSimulationStore();
     const [isUserModalOpen, setIsUserModalOpen] = useState(false);
     const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
     const [isPolicyModalOpen, setIsPolicyModalOpen] = useState(false);
@@ -66,7 +66,6 @@ export const IAMConsole: React.FC = () => {
 
     // Calculate security recommendations
     const usersWithoutPolicies = iam.users.filter(u => u.policies.length === 0).length;
-    const totalUsers = iam.users.length;
 
     return (
         <div className="space-y-6">
@@ -423,10 +422,10 @@ export const IAMConsole: React.FC = () => {
                                     <label
                                         key={group}
                                         className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${selectedGroup === group
-                                                ? 'border-aws-orange bg-orange-50'
-                                                : alreadyMember
-                                                    ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
-                                                    : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                            ? 'border-aws-orange bg-orange-50'
+                                            : alreadyMember
+                                                ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
+                                                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                                             }`}
                                     >
                                         <input

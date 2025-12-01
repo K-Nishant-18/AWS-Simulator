@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, Lightbulb, AlertTriangle, BookOpen, Code, Zap, Shield, DollarSign, Users } from 'lucide-react';
+import { Lightbulb, AlertTriangle, BookOpen, Code, Zap, Shield, Users } from 'lucide-react';
 
 export const IAMHelp: React.FC = () => {
     return (

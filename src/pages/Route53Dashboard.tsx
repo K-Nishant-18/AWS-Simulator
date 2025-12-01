@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Globe, Plus, X } from 'lucide-react';
+import { Globe, Plus } from 'lucide-react';
 import { useSimulationStore } from '../store/simulationStore';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
