@@ -103,4 +103,59 @@ export interface SimulationState {
     vpc: {
         vpcs: VPC[];
     };
+    rds: {
+        instances: RDSInstance[];
+    };
+    route53: {
+        hostedZones: HostedZone[];
+    };
+    elb: {
+        loadBalancers: LoadBalancer[];
+        targetGroups: TargetGroup[];
+    };
+}
+
+export interface LoadBalancer {
+    arn: string;
+    name: string;
+    dnsName: string;
+    scheme: 'internet-facing' | 'internal';
+    state: 'active' | 'provisioning';
+    vpcId: string;
+    targetGroupArn: string;
+}
+
+export interface TargetGroup {
+    arn: string;
+    name: string;
+    protocol: 'HTTP' | 'HTTPS';
+    port: number;
+    vpcId: string;
+    targets: string[]; // Instance IDs
+}
+
+export interface HostedZone {
+    id: string;
+    name: string;
+    recordCount: number;
+    records: DNSRecord[];
+}
+
+export interface DNSRecord {
+    name: string;
+    type: 'A' | 'CNAME' | 'MX' | 'TXT' | 'NS' | 'SOA';
+    value: string;
+    ttl: number;
+}
+
+export interface RDSInstance {
+    dbInstanceIdentifier: string;
+    engine: 'mysql' | 'postgres';
+    instanceClass: string;
+    status: 'creating' | 'available' | 'deleting';
+    masterUsername: string;
+    endpoint: string;
+    port: number;
+    securityGroups: string[];
+    allocatedStorage: number;
 }

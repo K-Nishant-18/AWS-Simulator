@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { SimulationState, S3Bucket, EC2Instance, SecurityGroup, IAMUser } from '../types/aws';
+import type { SimulationState, S3Bucket, EC2Instance, SecurityGroup, IAMUser, RDSInstance, HostedZone, DNSRecord, LoadBalancer, TargetGroup } from '../types/aws';
 
 interface SimulationStore extends SimulationState {
     // S3 Actions
@@ -22,6 +22,19 @@ interface SimulationStore extends SimulationState {
     createGroup: (groupName: string) => void;
     addUserToGroup: (userName: string, groupName: string) => void;
     attachPolicyToUser: (userName: string, policyArn: string) => void;
+
+    // RDS Actions
+    createRDSInstance: (identifier: string, engine: 'mysql' | 'postgres', username: string) => void;
+    deleteRDSInstance: (identifier: string) => void;
+
+    // Route 53 Actions
+    createHostedZone: (domainName: string) => void;
+    createDNSRecord: (zoneId: string, record: Omit<DNSRecord, 'ttl'>) => void;
+
+    // ELB Actions
+    createTargetGroup: (name: string, protocol: 'HTTP' | 'HTTPS', port: number) => string;
+    registerTargets: (targetGroupArn: string, instanceIds: string[]) => void;
+    createLoadBalancer: (name: string, targetGroupArn: string) => void;
 
     // Utility
     reset: () => void;
@@ -67,6 +80,16 @@ const initialState: SimulationState = {
     },
     vpc: {
         vpcs: [],
+    },
+    rds: {
+        instances: [],
+    },
+    route53: {
+        hostedZones: [],
+    },
+    elb: {
+        loadBalancers: [],
+        targetGroups: [],
     },
 };
 
@@ -287,6 +310,121 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
                         : user
                 ),
             },
+        }));
+    },
+
+    // RDS Actions
+    createRDSInstance: (identifier: string, engine: 'mysql' | 'postgres', username: string) => {
+        const newInstance: RDSInstance = {
+            dbInstanceIdentifier: identifier,
+            engine,
+            instanceClass: 'db.t3.micro',
+            status: 'available', // Simplified: instant creation
+            masterUsername: username,
+            endpoint: `${identifier}.${Math.random().toString(36).substr(2, 9)}.us-east-1.rds.amazonaws.com`,
+            port: engine === 'mysql' ? 3306 : 5432,
+            securityGroups: ['sg-default'],
+            allocatedStorage: 20,
+        };
+        set((state) => ({
+            rds: {
+                ...state.rds,
+                instances: [...state.rds.instances, newInstance],
+            },
+        }));
+    },
+
+    deleteRDSInstance: (identifier: string) => {
+        set((state) => ({
+            rds: {
+                ...state.rds,
+                instances: state.rds.instances.filter((i) => i.dbInstanceIdentifier !== identifier),
+            },
+        }));
+    },
+
+    // Route 53 Actions
+    createHostedZone: (domainName: string) => {
+        const newZone: HostedZone = {
+            id: `Z${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+            name: domainName,
+            recordCount: 2, // NS and SOA by default
+            records: [
+                { name: domainName, type: 'NS', value: 'ns-1.awsdns.com', ttl: 172800 },
+                { name: domainName, type: 'SOA', value: 'ns-1.awsdns.com', ttl: 900 }
+            ]
+        };
+        set((state) => ({
+            route53: {
+                hostedZones: [...state.route53.hostedZones, newZone]
+            }
+        }));
+    },
+
+    createDNSRecord: (zoneId: string, record: Omit<DNSRecord, 'ttl'>) => {
+        set((state) => ({
+            route53: {
+                hostedZones: state.route53.hostedZones.map(zone =>
+                    zone.id === zoneId
+                        ? {
+                            ...zone,
+                            records: [...zone.records, { ...record, ttl: 300 }],
+                            recordCount: zone.recordCount + 1
+                        }
+                        : zone
+                )
+            }
+        }));
+    },
+
+    // ELB Actions
+    createTargetGroup: (name: string, protocol: 'HTTP' | 'HTTPS', port: number) => {
+        const arn = `arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/${name}/${Math.random().toString(36).substr(2, 9)}`;
+        const newGroup: TargetGroup = {
+            arn,
+            name,
+            protocol,
+            port,
+            vpcId: 'vpc-main',
+            targets: []
+        };
+        set((state) => ({
+            elb: {
+                ...state.elb,
+                targetGroups: [...state.elb.targetGroups, newGroup]
+            }
+        }));
+        return arn;
+    },
+
+    registerTargets: (targetGroupArn: string, instanceIds: string[]) => {
+        set((state) => ({
+            elb: {
+                ...state.elb,
+                targetGroups: state.elb.targetGroups.map(tg =>
+                    tg.arn === targetGroupArn
+                        ? { ...tg, targets: [...tg.targets, ...instanceIds] }
+                        : tg
+                )
+            }
+        }));
+    },
+
+    createLoadBalancer: (name: string, targetGroupArn: string) => {
+        const newLB: LoadBalancer = {
+            arn: `arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/${name}/${Math.random().toString(36).substr(2, 9)}`,
+            name,
+            dnsName: `${name}-${Math.random().toString(36).substr(2, 9)}.us-east-1.elb.amazonaws.com`,
+            scheme: 'internet-facing',
+            state: 'active', // Simplified
+            vpcId: 'vpc-main',
+            targetGroupArn
+        };
+        set((state) => ({
+            elb: {
+                ...state.elb,
+                loadBalancers: [...state.elb.loadBalancers, newLB]
+            }
         }));
     },
 

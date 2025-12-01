@@ -1,9 +1,13 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { S3Lab } from './pages/S3Lab';
 import { EC2Lab } from './pages/EC2Lab';
 import { IAMLab } from './pages/IAMLab';
-import { Cloud } from 'lucide-react';
+import { RDSLab } from './pages/RDSLab';
+import { Route53Lab } from './pages/Route53Lab';
+import { ELBLab } from './pages/ELBLab';
+import { NavCard } from './components/NavCard';
+import { Cloud, HardDrive, Server, Shield, Database, Globe, Network } from 'lucide-react';
 
 const HomePage: React.FC = () => {
   return (
@@ -19,57 +23,49 @@ const HomePage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* S3 Lab Card */}
-          <Link
-            to="/labs/s3"
-            className="bg-white rounded-xl p-6 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
-          >
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-              <span className="text-2xl">📦</span>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">S3 Static Website</h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Learn to host a static website using Amazon S3
-            </p>
-            <div className="flex items-center text-aws-orange text-sm font-medium">
-              Start Lab →
-            </div>
-          </Link>
-
-          {/* EC2 Lab Card */}
-          <Link
-            to="/labs/ec2"
-            className="bg-white rounded-xl p-6 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
-          >
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-              <span className="text-2xl">🖥️</span>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">EC2 Basics</h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Launch and configure virtual servers
-            </p>
-            <div className="flex items-center text-aws-orange text-sm font-medium">
-              Start Lab →
-            </div>
-          </Link>
-
-          {/* IAM Lab Card */}
-          <Link
-            to="/labs/iam"
-            className="bg-white rounded-xl p-6 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
-          >
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-              <span className="text-2xl">🔐</span>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">IAM Security</h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Manage users, roles, and permissions
-            </p>
-            <div className="flex items-center text-aws-orange text-sm font-medium">
-              Start Lab →
-            </div>
-          </Link>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <NavCard
+            title="S3: Static Website"
+            description="Host a static website with high availability and scalability."
+            link="/s3"
+            icon={HardDrive}
+            color="green"
+          />
+          <NavCard
+            title="EC2: Launch a Server"
+            description="Provision and manage virtual servers in the cloud."
+            link="/ec2"
+            icon={Server}
+            color="orange"
+          />
+          <NavCard
+            title="IAM: Secure Your Account"
+            description="Manage users, groups, and permissions to secure your cloud environment."
+            link="/iam"
+            icon={Shield}
+            color="blue"
+          />
+          <NavCard
+            title="RDS: Launch a Database"
+            description="Provision a managed relational database (MySQL/Postgres)."
+            link="/rds"
+            icon={Database}
+            color="purple"
+          />
+          <NavCard
+            title="Route 53: Custom Domain"
+            description="Manage DNS records and route traffic to your application."
+            link="/route53"
+            icon={Globe}
+            color="orange"
+          />
+          <NavCard
+            title="ELB: Scale Your App"
+            description="Distribute traffic across multiple instances for high availability."
+            link="/elb"
+            icon={Network}
+            color="blue"
+          />
         </div>
 
         <div className="mt-12 text-center">
@@ -87,9 +83,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/labs/s3" element={<S3Lab />} />
-        <Route path="/labs/ec2" element={<EC2Lab />} />
-        <Route path="/labs/iam" element={<IAMLab />} />
+        <Route path="/s3" element={<S3Lab />} />
+        <Route path="/ec2" element={<EC2Lab />} />
+        <Route path="/iam" element={<IAMLab />} />
+        <Route path="/rds" element={<RDSLab />} />
+        <Route path="/route53" element={<Route53Lab />} />
+        <Route path="/elb" element={<ELBLab />} />
       </Routes>
     </BrowserRouter>
   );
