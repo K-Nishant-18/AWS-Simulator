@@ -89,4 +89,42 @@ export class LabValidator {
 
         return { success: true, message: 'Great job! You have set up IAM users and groups securely.' };
     }
+    // Route 53 Lab: DNS Management
+    static validateRoute53Lab(state: SimulationState): ValidationResult {
+        // 1. Check for Hosted Zone
+        if (state.route53.hostedZones.length === 0) {
+            return { success: false, message: 'No Hosted Zone found. Create a Public Hosted Zone for your domain.' };
+        }
+
+        const zone = state.route53.hostedZones[0];
+
+        // 2. Check for A Record
+        const hasARecord = zone.records.some(r => r.type === 'A');
+        if (!hasARecord) {
+            return { success: false, message: `Hosted Zone '${zone.name}' exists, but has no 'A' record. Create an A record to point to an IP.` };
+        }
+
+        return { success: true, message: 'Excellent! You have configured Route 53 with a Hosted Zone and DNS records.' };
+    }
+
+    // ELB Lab: Load Balancing
+    static validateELBLab(state: SimulationState): ValidationResult {
+        // 1. Check for Load Balancer
+        if (state.elb.loadBalancers.length === 0) {
+            return { success: false, message: 'No Load Balancer found. Create an Application Load Balancer.' };
+        }
+
+        // 2. Check for Target Group
+        if (state.elb.targetGroups.length === 0) {
+            return { success: false, message: 'No Target Group found. You need a target group to route traffic.' };
+        }
+
+        // 3. Check for Registered Targets
+        const activeTg = state.elb.targetGroups.find(tg => tg.targets.length > 0);
+        if (!activeTg) {
+            return { success: false, message: 'Target Group exists but has no registered targets. Register EC2 instances to your target group.' };
+        }
+
+        return { success: true, message: 'Great work! Your Load Balancer is set up and routing traffic to targets.' };
+    }
 }

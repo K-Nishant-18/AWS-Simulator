@@ -15,11 +15,25 @@ export const Tooltip: React.FC<TooltipProps> = ({
     children,
 }) => {
     const [isVisible, setIsVisible] = useState(false);
+    const [position, setPosition] = useState({ top: 0, left: 0 });
+    const triggerRef = React.useRef<HTMLDivElement>(null);
+
+    const handleMouseEnter = () => {
+        if (triggerRef.current) {
+            const rect = triggerRef.current.getBoundingClientRect();
+            setPosition({
+                top: rect.top,
+                left: rect.left + rect.width / 2,
+            });
+        }
+        setIsVisible(true);
+    };
 
     return (
-        <div className="relative inline-block">
+        <>
             <div
-                onMouseEnter={() => setIsVisible(true)}
+                ref={triggerRef}
+                onMouseEnter={handleMouseEnter}
                 onMouseLeave={() => setIsVisible(false)}
                 className="inline-flex items-center gap-1 cursor-help"
             >
@@ -28,7 +42,14 @@ export const Tooltip: React.FC<TooltipProps> = ({
             </div>
 
             {isVisible && (
-                <div className="absolute z-50 w-80 p-4 bg-gray-900 text-white rounded-lg shadow-xl bottom-full left-0 mb-2">
+                <div
+                    className="fixed z-[100] w-80 p-4 bg-gray-900 text-white rounded-lg shadow-xl pointer-events-none"
+                    style={{
+                        top: `${position.top - 8}px`,
+                        left: `${position.left}px`,
+                        transform: 'translate(-50%, -100%)',
+                    }}
+                >
                     <div className="font-semibold mb-2">{title}</div>
                     <div className="text-sm text-gray-300 mb-2">{content}</div>
                     {cliExample && (
@@ -37,9 +58,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
                         </div>
                     )}
                     {/* Arrow */}
-                    <div className="absolute top-full left-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-gray-900" />
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-gray-900" />
                 </div>
             )}
-        </div>
+        </>
     );
 };

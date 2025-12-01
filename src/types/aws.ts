@@ -46,6 +46,19 @@ export interface SecurityGroupRule {
     description?: string;
 }
 
+export interface MFADevice {
+    serialNumber: string;
+    type: 'virtual' | 'hardware';
+    enabledDate: Date;
+}
+
+export interface AccessKey {
+    accessKeyId: string;
+    status: 'Active' | 'Inactive';
+    createdDate: Date;
+    lastUsed?: Date;
+}
+
 export interface IAMUser {
     userName: string;
     userId: string;
@@ -53,6 +66,30 @@ export interface IAMUser {
     createdAt: Date;
     policies: string[];
     groups: string[];
+    mfaEnabled: boolean;
+    mfaDevices: MFADevice[];
+    accessKeys: AccessKey[];
+    passwordLastChanged: Date;
+    lastActivity?: Date;
+}
+
+export interface IAMRole {
+    roleName: string;
+    roleId: string;
+    arn: string;
+    trustPolicy: any;
+    policies: string[];
+    description: string;
+    createdDate: Date;
+}
+
+export interface SecurityRecommendation {
+    id: string;
+    severity: 'critical' | 'warning' | 'info';
+    title: string;
+    description: string;
+    action: string;
+    affectedResource?: string;
 }
 
 export interface IAMPolicy {
@@ -98,6 +135,7 @@ export interface SimulationState {
     iam: {
         users: IAMUser[];
         groups: string[];
+        roles: IAMRole[];
         policies: IAMPolicy[];
     };
     vpc: {
@@ -105,6 +143,9 @@ export interface SimulationState {
     };
     rds: {
         instances: RDSInstance[];
+        snapshots: RDSSnapshot[];
+        parameterGroups: RDSParameterGroup[];
+        subnetGroups: RDSSubnetGroup[];
     };
     route53: {
         hostedZones: HostedZone[];
@@ -150,12 +191,42 @@ export interface DNSRecord {
 
 export interface RDSInstance {
     dbInstanceIdentifier: string;
-    engine: 'mysql' | 'postgres';
+    engine: 'mysql' | 'postgres' | 'mariadb' | 'oracle' | 'sqlserver';
+    engineVersion: string;
     instanceClass: string;
-    status: 'creating' | 'available' | 'deleting';
+    status: 'creating' | 'available' | 'deleting' | 'backing-up' | 'modifying' | 'stopped';
     masterUsername: string;
     endpoint: string;
     port: number;
     securityGroups: string[];
     allocatedStorage: number;
+    multiAZ: boolean;
+    publiclyAccessible: boolean;
+    backupRetentionPeriod: number;
+    createdAt: Date;
+    parameterGroup: string;
+    subnetGroup: string;
+}
+
+export interface RDSSnapshot {
+    snapshotId: string;
+    dbInstanceIdentifier: string;
+    engine: string;
+    status: 'creating' | 'available' | 'deleting';
+    snapshotType: 'manual' | 'automated';
+    createdAt: Date;
+    allocatedStorage: number;
+}
+
+export interface RDSParameterGroup {
+    name: string;
+    family: string;
+    description: string;
+}
+
+export interface RDSSubnetGroup {
+    name: string;
+    description: string;
+    vpcId: string;
+    subnets: string[];
 }

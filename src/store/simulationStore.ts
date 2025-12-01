@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { SimulationState, S3Bucket, EC2Instance, SecurityGroup, IAMUser, RDSInstance, HostedZone, DNSRecord, LoadBalancer, TargetGroup } from '../types/aws';
+import type { SimulationState, S3Bucket, EC2Instance, SecurityGroup, IAMUser, IAMRole, RDSInstance, HostedZone, DNSRecord, LoadBalancer, TargetGroup, MFADevice, AccessKey, SecurityRecommendation } from '../types/aws';
 
 interface SimulationStore extends SimulationState {
     // S3 Actions
@@ -13,15 +13,32 @@ interface SimulationStore extends SimulationState {
     // EC2 Actions
     launchInstance: (instanceType: string, ami: string, securityGroups: string[]) => void;
     terminateInstance: (instanceId: string) => void;
-    createSecurityGroup: (groupName: string, description: string) => void;
+    createSecurityGroup: (groupName: string, description: string) => string;
     addInboundRule: (groupId: string, protocol: string, port: number, source: string) => void;
 
     // IAM Actions
-    createUser: (userName: string) => void;
+    createUser: (userName: string, enableMFA?: boolean) => void;
     deleteUser: (userName: string) => void;
     createGroup: (groupName: string) => void;
     addUserToGroup: (userName: string, groupName: string) => void;
     attachPolicyToUser: (userName: string, policyArn: string) => void;
+
+    // MFA Management
+    enableMFA: (userName: string, deviceType: 'virtual' | 'hardware') => void;
+    disableMFA: (userName: string) => void;
+
+    // Access Key Management
+    createAccessKey: (userName: string) => { accessKeyId: string; secretKey: string };
+    deleteAccessKey: (userName: string, accessKeyId: string) => void;
+
+    // Role Management
+    createRole: (roleName: string, trustPolicy: any, description: string) => void;
+    attachPolicyToRole: (roleName: string, policyArn: string) => void;
+    deleteRole: (roleName: string) => void;
+
+    // Security
+    calculateSecurityScore: () => number;
+    getSecurityRecommendations: () => SecurityRecommendation[];
 
     // RDS Actions
     createRDSInstance: (identifier: string, engine: 'mysql' | 'postgres', username: string) => void;
@@ -63,6 +80,7 @@ const initialState: SimulationState = {
     iam: {
         users: [],
         groups: [],
+        roles: [],
         policies: [
             {
                 policyName: 'AdministratorAccess',
@@ -83,6 +101,20 @@ const initialState: SimulationState = {
     },
     rds: {
         instances: [],
+        snapshots: [],
+        parameterGroups: [
+            { name: 'default.mysql8.0', family: 'mysql8.0', description: 'Default parameter group for MySQL 8.0' },
+            { name: 'default.postgres15', family: 'postgres15', description: 'Default parameter group for PostgreSQL 15' },
+            { name: 'default.mariadb10.6', family: 'mariadb10.6', description: 'Default parameter group for MariaDB 10.6' }
+        ],
+        subnetGroups: [
+            {
+                name: 'default',
+                description: 'Default DB subnet group',
+                vpcId: 'vpc-default',
+                subnets: ['subnet-1a', 'subnet-1b', 'subnet-1c']
+            }
+        ]
     },
     route53: {
         hostedZones: [],
@@ -219,8 +251,9 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
     },
 
     createSecurityGroup: (groupName: string, description: string) => {
+        const groupId = `sg-${Math.random().toString(36).substr(2, 9)}`;
         const sg: SecurityGroup = {
-            groupId: `sg-${Math.random().toString(36).substr(2, 9)}`,
+            groupId,
             groupName,
             description,
             vpcId: 'vpc-default',
@@ -233,6 +266,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
                 securityGroups: [...state.ec2.securityGroups, sg],
             },
         }));
+        return groupId;
     },
 
     addInboundRule: (groupId: string, protocol: string, port: number, source: string) => {
@@ -252,7 +286,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
     },
 
     // IAM Actions
-    createUser: (userName: string) => {
+    createUser: (userName: string, enableMFA: boolean = false) => {
         const user: IAMUser = {
             userName,
             userId: `AIDA${Math.random().toString(36).substr(2, 16).toUpperCase()}`,
@@ -260,6 +294,15 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
             createdAt: new Date(),
             policies: [],
             groups: [],
+            mfaEnabled: enableMFA,
+            mfaDevices: enableMFA ? [{
+                serialNumber: `arn:aws:iam::123456789012:mfa/${userName}`,
+                type: 'virtual',
+                enabledDate: new Date()
+            }] : [],
+            accessKeys: [],
+            passwordLastChanged: new Date(),
+            lastActivity: new Date(),
         };
         set((state) => ({
             iam: {
@@ -311,6 +354,232 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
                 ),
             },
         }));
+    },
+
+    // MFA Management
+    enableMFA: (userName: string, deviceType: 'virtual' | 'hardware' = 'virtual') => {
+        set((state) => ({
+            iam: {
+                ...state.iam,
+                users: state.iam.users.map((user) =>
+                    user.userName === userName
+                        ? {
+                            ...user,
+                            mfaEnabled: true,
+                            mfaDevices: [...user.mfaDevices, {
+                                serialNumber: `arn:aws:iam::123456789012:mfa/${userName}`,
+                                type: deviceType,
+                                enabledDate: new Date()
+                            }]
+                        }
+                        : user
+                ),
+            },
+        }));
+    },
+
+    disableMFA: (userName: string) => {
+        set((state) => ({
+            iam: {
+                ...state.iam,
+                users: state.iam.users.map((user) =>
+                    user.userName === userName
+                        ? { ...user, mfaEnabled: false, mfaDevices: [] }
+                        : user
+                ),
+            },
+        }));
+    },
+
+    // Access Key Management
+    createAccessKey: (userName: string) => {
+        const accessKeyId = `AKIA${Math.random().toString(36).substr(2, 16).toUpperCase()}`;
+        const secretKey = `${Math.random().toString(36).substr(2)}${Math.random().toString(36).substr(2)}`;
+
+        set((state) => ({
+            iam: {
+                ...state.iam,
+                users: state.iam.users.map((user) =>
+                    user.userName === userName
+                        ? {
+                            ...user,
+                            accessKeys: [...user.accessKeys, {
+                                accessKeyId,
+                                status: 'Active',
+                                createdDate: new Date(),
+                                lastUsed: new Date()
+                            }]
+                        }
+                        : user
+                ),
+            },
+        }));
+
+        return { accessKeyId, secretKey };
+    },
+
+    deleteAccessKey: (userName: string, accessKeyId: string) => {
+        set((state) => ({
+            iam: {
+                ...state.iam,
+                users: state.iam.users.map((user) =>
+                    user.userName === userName
+                        ? {
+                            ...user,
+                            accessKeys: user.accessKeys.filter(key => key.accessKeyId !== accessKeyId)
+                        }
+                        : user
+                ),
+            },
+        }));
+    },
+
+    // Role Management
+    createRole: (roleName: string, trustPolicy: any, description: string) => {
+        const role: IAMRole = {
+            roleName,
+            roleId: `AROA${Math.random().toString(36).substr(2, 16).toUpperCase()}`,
+            arn: `arn:aws:iam::123456789012:role/${roleName}`,
+            trustPolicy,
+            policies: [],
+            description,
+            createdDate: new Date()
+        };
+
+        set((state) => ({
+            iam: {
+                ...state.iam,
+                roles: [...state.iam.roles, role],
+            },
+        }));
+    },
+
+    attachPolicyToRole: (roleName: string, policyArn: string) => {
+        set((state) => ({
+            iam: {
+                ...state.iam,
+                roles: state.iam.roles.map((role) =>
+                    role.roleName === roleName
+                        ? { ...role, policies: [...role.policies, policyArn] }
+                        : role
+                ),
+            },
+        }));
+    },
+
+    deleteRole: (roleName: string) => {
+        set((state) => ({
+            iam: {
+                ...state.iam,
+                roles: state.iam.roles.filter((r) => r.roleName !== roleName),
+            },
+        }));
+    },
+
+    // Security
+    calculateSecurityScore: () => {
+        const state = get();
+        const users = state.iam.users;
+
+        if (users.length === 0) return 100;
+
+        let score = 0;
+        const weights = {
+            mfa: 40,
+            policies: 30,
+            accessKeys: 20,
+            activity: 10
+        };
+
+        // MFA Score
+        const mfaEnabled = users.filter(u => u.mfaEnabled).length;
+        score += (mfaEnabled / users.length) * weights.mfa;
+
+        // Policy Score (users with at least one policy)
+        const usersWithPolicies = users.filter(u => u.policies.length > 0).length;
+        score += (usersWithPolicies / users.length) * weights.policies;
+
+        // Access Key Score (users with recent activity)
+        const usersWithRecentKeys = users.filter(u => {
+            if (u.accessKeys.length === 0) return true; // No keys is good
+            return u.accessKeys.some(key => {
+                const daysSinceCreation = (Date.now() - key.createdDate.getTime()) / (1000 * 60 * 60 * 24);
+                return daysSinceCreation < 90; // Keys less than 90 days old
+            });
+        }).length;
+        score += (usersWithRecentKeys / users.length) * weights.accessKeys;
+
+        // Activity Score
+        const activeUsers = users.filter(u => u.lastActivity).length;
+        score += (activeUsers / users.length) * weights.activity;
+
+        return Math.round(score);
+    },
+
+    getSecurityRecommendations: () => {
+        const state = get();
+        const recommendations: SecurityRecommendation[] = [];
+
+        // Check for users without MFA
+        const usersWithoutMFA = state.iam.users.filter(u => !u.mfaEnabled);
+        if (usersWithoutMFA.length > 0) {
+            recommendations.push({
+                id: 'mfa-missing',
+                severity: 'critical',
+                title: 'Enable MFA for all users',
+                description: `${usersWithoutMFA.length} user(s) do not have MFA enabled`,
+                action: 'Enable multi-factor authentication to add an extra layer of security',
+                affectedResource: usersWithoutMFA.map(u => u.userName).join(', ')
+            });
+        }
+
+        // Check for users without policies
+        const usersWithoutPolicies = state.iam.users.filter(u => u.policies.length === 0);
+        if (usersWithoutPolicies.length > 0) {
+            recommendations.push({
+                id: 'no-permissions',
+                severity: 'warning',
+                title: 'Users without permissions',
+                description: `${usersWithoutPolicies.length} user(s) have no policies attached`,
+                action: 'Attach appropriate policies to grant necessary permissions',
+                affectedResource: usersWithoutPolicies.map(u => u.userName).join(', ')
+            });
+        }
+
+        // Check for old access keys
+        const usersWithOldKeys = state.iam.users.filter(u =>
+            u.accessKeys.some(key => {
+                const daysSinceCreation = (Date.now() - key.createdDate.getTime()) / (1000 * 60 * 60 * 24);
+                return daysSinceCreation > 90;
+            })
+        );
+        if (usersWithOldKeys.length > 0) {
+            recommendations.push({
+                id: 'old-access-keys',
+                severity: 'warning',
+                title: 'Rotate old access keys',
+                description: `${usersWithOldKeys.length} user(s) have access keys older than 90 days`,
+                action: 'Rotate access keys regularly to maintain security',
+                affectedResource: usersWithOldKeys.map(u => u.userName).join(', ')
+            });
+        }
+
+        // Check for admin access
+        const adminUsers = state.iam.users.filter(u =>
+            u.policies.includes('arn:aws:iam::aws:policy/AdministratorAccess')
+        );
+        if (adminUsers.length > 0 && !adminUsers.every(u => u.mfaEnabled)) {
+            recommendations.push({
+                id: 'admin-no-mfa',
+                severity: 'critical',
+                title: 'Admin users must have MFA',
+                description: 'Users with administrator access should always have MFA enabled',
+                action: 'Enable MFA for all users with administrative privileges',
+                affectedResource: adminUsers.filter(u => !u.mfaEnabled).map(u => u.userName).join(', ')
+            });
+        }
+
+        return recommendations;
     },
 
     // RDS Actions

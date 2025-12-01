@@ -26,11 +26,26 @@ export const EC2Console: React.FC = () => {
         setIsLaunchModalOpen(false);
     };
 
+    const [allowHttp, setAllowHttp] = useState(false);
+
     const handleCreateSg = () => {
         if (newSgName.trim()) {
-            createSecurityGroup(newSgName, newSgDesc);
+            const newGroupId = createSecurityGroup(newSgName, newSgDesc);
+
+            // If HTTP allowed, use the returned ID to add the rule
+            if (allowHttp) {
+                // We need to access the store directly to call addInboundRule because 
+                // the hook's addInboundRule might be bound to stale state if we were using it differently,
+                // but here we are just calling the function. 
+                // However, since we are inside the component, we can just use the function from the hook.
+                // But wait, we need to make sure we are calling the function that updates the store.
+                // The function from useSimulationStore() is fine.
+                useSimulationStore.getState().addInboundRule(newGroupId, 'tcp', 80, '0.0.0.0/0');
+            }
+
             setNewSgName('');
             setNewSgDesc('');
+            setAllowHttp(false);
             setIsSgModalOpen(false);
         }
     };
@@ -305,6 +320,15 @@ export const EC2Console: React.FC = () => {
                         value={newSgDesc}
                         onChange={(e) => setNewSgDesc(e.target.value)}
                     />
+                    <label className="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                        <input
+                            type="checkbox"
+                            checked={allowHttp}
+                            onChange={(e) => setAllowHttp(e.target.checked)}
+                            className="rounded text-aws-orange focus:ring-aws-orange"
+                        />
+                        <span className="text-sm text-gray-700">Allow HTTP traffic (Port 80) from anywhere</span>
+                    </label>
                 </div>
             </Modal>
         </div>
