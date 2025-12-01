@@ -45,7 +45,7 @@ export const Route53LabGuide: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Lab Header */}
-            <div className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-lg p-6">
+            <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-3">
                     <Globe size={32} />
                     <h2 className="text-2xl font-bold">Lab: Setup Custom Domain Routing</h2>

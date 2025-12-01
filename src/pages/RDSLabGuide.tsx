@@ -63,12 +63,12 @@ export const RDSLabGuide: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Lab Header */}
-            <div className="bg-gradient-to-r from-green-600 to-teal-700 text-white rounded-lg p-6">
+            <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-3">
                     <Database size={32} />
                     <h2 className="text-2xl font-bold">Lab: Launch a Managed Database with Amazon RDS</h2>
                 </div>
-                <p className="text-green-100">
+                <p className="text-orange-100">
                     Learn how to create and configure a managed relational database using Amazon RDS.
                     You'll launch a MySQL database, configure settings, and understand how RDS simplifies database management.
                 </p>

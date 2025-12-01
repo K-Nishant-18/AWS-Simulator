@@ -57,12 +57,12 @@ export const S3LabGuide: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Lab Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg p-6">
+            <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-3">
                     <BookOpen size={32} />
                     <h2 className="text-2xl font-bold">Lab: Host a Static Website on Amazon S3</h2>
                 </div>
-                <p className="text-blue-100">
+                <p className="text-orange-100">
                     Learn how to use Amazon S3 to host a static website. You'll create a bucket, upload HTML content,
                     configure permissions, and enable website hosting - just like real-world web developers do!
                 </p>

@@ -51,12 +51,12 @@ export const IAMLabGuide: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Lab Header */}
-            <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg p-6">
+            <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-3">
                     <Users size={32} />
                     <h2 className="text-2xl font-bold">Lab: Secure Your AWS Account with IAM</h2>
                 </div>
-                <p className="text-purple-100">
+                <p className="text-orange-100">
                     Learn how to manage identities and permissions using AWS Identity and Access Management (IAM).
                     You'll create users, groups, and attach policies to control access to AWS resources.
                 </p>

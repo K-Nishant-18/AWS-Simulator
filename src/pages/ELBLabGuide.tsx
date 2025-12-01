@@ -51,12 +51,12 @@ export const ELBLabGuide: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Lab Header */}
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg p-6">
+            <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-3">
                     <Network size={32} />
                     <h2 className="text-2xl font-bold">Lab: Scale Your Application with ELB</h2>
                 </div>
-                <p className="text-purple-100">
+                <p className="text-orange-100">
                     Learn how to distribute traffic across multiple instances using Elastic Load Balancing.
                     You'll create a target group, launch an Application Load Balancer, and register targets.
                 </p>

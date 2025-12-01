@@ -4,76 +4,10 @@ import { useSimulationStore } from '../store/simulationStore';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { Modal } from '../components/Modal';
-import { ELBLabGuide } from './ELBLabGuide';
-import { ELBHelp } from './ELBHelp';
-
 
 export const ELBConsole: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'lab' | 'help'>('dashboard');
-    const [isCreateLBModalOpen, setIsCreateLBModalOpen] = useState(false);
-
-    return (
-        <div className="flex flex-col h-full bg-gray-50">
-            {/* Header */}
-            <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="bg-purple-600 p-2 rounded-lg">
-                        <Network className="text-white" size={24} />
-                    </div>
-                    <h1 className="text-xl font-bold text-gray-900">Load Balancers</h1>
-                </div>
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => setActiveTab('dashboard')}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-purple-50 text-purple-700' : 'text-gray-600 hover:bg-gray-100'}`}
-                    >
-                        Dashboard
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('lab')}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'lab' ? 'bg-purple-50 text-purple-700' : 'text-gray-600 hover:bg-gray-100'}`}
-                    >
-                        Lab Guide
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('help')}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'help' ? 'bg-purple-50 text-purple-700' : 'text-gray-600 hover:bg-gray-100'}`}
-                    >
-                        Help & Tips
-                    </button>
-                </div>
-            </header>
-
-            {/* Content */}
-            <main className="flex-1 overflow-auto p-6">
-                <div className="max-w-6xl mx-auto">
-                    {activeTab === 'dashboard' && (
-                        <ELBDashboardContent
-                            isCreateLBModalOpen={isCreateLBModalOpen}
-                            setIsCreateLBModalOpen={setIsCreateLBModalOpen}
-                        />
-                    )}
-
-                    {activeTab === 'lab' && (
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                            <ELBLabGuide />
-                        </div>
-                    )}
-
-                    {activeTab === 'help' && (
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-                            <ELBHelp />
-                        </div>
-                    )}
-                </div>
-            </main>
-        </div>
-    );
-};
-
-// Sub-component for the dashboard content to keep the main component clean
-const ELBDashboardContent = ({ isCreateLBModalOpen, setIsCreateLBModalOpen }: { isCreateLBModalOpen: boolean, setIsCreateLBModalOpen: (v: boolean) => void }) => {
     const { elb, ec2, createLoadBalancer, createTargetGroup, registerTargets } = useSimulationStore();
+    const [isCreateLBModalOpen, setIsCreateLBModalOpen] = useState(false);
 
     // Form State
     const [lbName, setLbName] = useState('');
@@ -108,10 +42,14 @@ const ELBDashboardContent = ({ isCreateLBModalOpen, setIsCreateLBModalOpen }: { 
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-gray-900">Load Balancers</h2>
-                <Button onClick={() => setIsCreateLBModalOpen(true)} icon={Plus}>
-                    Create load balancer
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Elastic Load Balancing</h1>
+                    <p className="text-gray-600 mt-1">Distribute incoming traffic across multiple targets</p>
+                </div>
+                <Button onClick={() => setIsCreateLBModalOpen(true)} variant="primary" icon={Plus}>
+                    Create Load Balancer
                 </Button>
             </div>
 
@@ -162,7 +100,7 @@ const ELBDashboardContent = ({ isCreateLBModalOpen, setIsCreateLBModalOpen }: { 
             </div>
 
             {/* Target Groups List */}
-            <div className="mt-8">
+            <div>
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Target Groups</h2>
                 <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
                     <table className="w-full text-left border-collapse">
