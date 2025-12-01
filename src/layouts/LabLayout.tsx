@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Code, HelpCircle, Network } from 'lucide-react';
+import { BookOpen, Code, HelpCircle, Network, Github } from 'lucide-react';
 import { ArchitectureDiagram } from '../components/ArchitectureDiagram';
 
 interface LabLayoutProps {
@@ -31,6 +31,15 @@ export const LabLayout: React.FC<LabLayoutProps> = ({
                             <p className="text-xs md:text-sm text-gray-300 hidden md:block">Learn AWS hands-on, risk-free</p>
                         </div>
                     </div>
+                    <a
+                        href="https://github.com/K-Nishant-18/AWS-Simulator"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hidden md:block text-white/80 hover:text-white transition-colors"
+                        title="View on GitHub"
+                    >
+                        <Github size={24} />
+                    </a>
                 </div>
             </header>
 
@@ -128,6 +137,33 @@ export const LabLayout: React.FC<LabLayoutProps> = ({
                     </aside>
                 )}
             </div>
+
+            {/* Footer */}
+            <footer className="bg-white border-t border-gray-200 py-2 px-4 text-center text-xs text-gray-500 flex-shrink-0">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+                    <span>
+                        Made by{' '}
+                        <a
+                            href="https://www.kumar-nishant.me/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-aws-blue hover:text-aws-orange font-medium transition-colors"
+                        >
+                            KUMAR NISHANT
+                        </a>
+                        {' '}with ❤️ for Cloud Enthusiasts
+                    </span>
+                    <a
+                        href="https://github.com/K-Nishant-18/AWS-Simulator"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="md:hidden text-gray-500 hover:text-gray-700 transition-colors"
+                        title="View on GitHub"
+                    >
+                        <Github size={20} />
+                    </a>
+                </div>
+            </footer>
         </div>
     );
 };

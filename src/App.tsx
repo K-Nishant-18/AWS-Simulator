@@ -8,6 +8,7 @@ import { Route53Lab } from './pages/Route53Lab';
 import { ELBLab } from './pages/ELBLab';
 import { NavCard } from './components/NavCard';
 import { S3Icon, EC2Icon, IAMIcon, RDSIcon, Route53Icon, ELBIcon } from './components/ServiceIcons';
+import { Github } from 'lucide-react';
 
 const HomePage: React.FC = () => {
   return (
@@ -72,10 +73,34 @@ const HomePage: React.FC = () => {
           />
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-12 text-center space-y-4">
           <p className="text-gray-400 text-sm">
             100% Safe • No AWS Account Required • Zero Cost
           </p>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 pt-4 border-t border-gray-800/50 max-w-md mx-auto">
+            <p className="text-gray-400 text-sm">
+              Made by{' '}
+              <a
+                href="https://www.kumar-nishant.me/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-500 hover:text-red-400 font-medium transition-colors"
+              >
+                KUMAR NISHANT
+              </a>
+              {' '}with ❤️ for Cloud Enthusiasts
+            </p>
+            <a
+              href="https://github.com/K-Nishant-18/AWS-Simulator"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors"
+              title="View on GitHub"
+            >
+              <Github size={24} />
+            </a>
+          </div>
         </div>
       </div>
     </div>
