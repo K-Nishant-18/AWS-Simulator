@@ -8,7 +8,6 @@ import { Route53Lab } from './pages/Route53Lab';
 import { ELBLab } from './pages/ELBLab';
 import { NavCard } from './components/NavCard';
 import { S3Icon, EC2Icon, IAMIcon, RDSIcon, Route53Icon, ELBIcon } from './components/ServiceIcons';
-import { Cloud } from 'lucide-react';
 
 const HomePage: React.FC = () => {
   return (

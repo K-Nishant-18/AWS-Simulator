@@ -5,7 +5,7 @@ import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { Modal } from '../components/Modal';
 import { Tooltip } from '../components/Tooltip';
-import { FolderPlus, Upload, Trash2, Globe, Settings } from 'lucide-react';
+import { FolderPlus, Upload, Trash2, Globe } from 'lucide-react';
 
 export const S3Console: React.FC = () => {
     const { s3, createBucket, deleteBucket, uploadObject, setBucketPublicAccess, enableStaticWebsite } = useSimulationStore();
