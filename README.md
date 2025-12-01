@@ -1,73 +1,86 @@
-# React + TypeScript + Vite
+# ☁️ AWS Real-Life Simulator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?logo=tailwind-css&logoColor=white)
 
-Currently, two official plugins are available:
+**Master the Cloud, Risk-Free.**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The **AWS Real-Life Simulator** is a high-fidelity, client-side educational tool designed to help developers and students learn Amazon Web Services (AWS) concepts without the fear of unexpected bills or breaking production environments.
 
-## React Compiler
+Experience a fully interactive console, realistic CLI commands, and guided labs—all running locally in your browser.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 📦 S3: Object Storage
+- **Bucket Management**: Create and delete buckets with region selection.
+- **Object Operations**: Upload, list, and delete files.
+- **Static Website Hosting**: Simulate hosting a static site with public access controls.
+- **Lab**: "Host a Static Website" guides you through the process.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🖥️ EC2: Virtual Servers
+- **Instance Launch Wizard**: Select AMIs, instance types (t2.micro, etc.), and configure details.
+- **Lifecycle Management**: Start, stop, and terminate instances.
+- **Security Groups**: Configure inbound/outbound firewall rules.
+- **Lab**: "Launch Your First Server" teaches compute basics.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 🛡️ IAM: Identity & Access
+- **User Management**: Create and delete IAM users.
+- **Policy Attachment**: Attach managed policies (AdministratorAccess, ReadOnly) to users.
+- **Groups**: Organize users into groups for easier permission management.
+- **Lab**: "Secure Your Account" focuses on least-privilege principles.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🗄️ RDS: Managed Databases
+- **Database Provisioning**: Launch MySQL or PostgreSQL instances.
+- **Connection Simulation**: View endpoints and simulate connectivity.
+- **Lab**: "Launch a Database" covers relational DB setup.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🌐 Route 53: DNS Management
+- **Hosted Zones**: Create public hosted zones for domains.
+- **Record Sets**: Manage A, CNAME, MX, TXT, NS, and SOA records.
+- **Lab**: "Setup Custom Domain" explains DNS routing.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### ⚖️ ELB: Load Balancing
+- **Application Load Balancers**: Distribute traffic across targets.
+- **Target Groups**: Register EC2 instances and manage health checks.
+- **Lab**: "Scale Your Application" demonstrates high availability.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+
+
+## 🔮 Future Roadmap (Phase 3)
+
+- **Serverless**: AWS Lambda & API Gateway simulation.
+- **Monitoring**: CloudWatch metrics and alarms.
+- **IaC**: CloudFormation template deployment.
+- **NoSQL**: DynamoDB table management.
+- **Cost Explorer**: Simulated billing and budget alerts.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1.  Fork the project
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+  <p>Made with ❤️ for Cloud Enthusiasts</p>
+</div>
