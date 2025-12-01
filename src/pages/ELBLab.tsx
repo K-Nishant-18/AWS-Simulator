@@ -4,14 +4,18 @@ import { ELBConsole } from './ELBConsole';
 import { ELBLabGuide } from './ELBLabGuide';
 import { ELBHelp } from './ELBHelp';
 import { Terminal } from '../components/Terminal';
+import { WelcomePopup } from '../components/WelcomePopup';
 
 export const ELBLab: React.FC = () => {
     return (
-        <LabLayout
-            guide={<ELBLabGuide />}
-            console={<ELBConsole />}
-            terminal={<Terminal />}
-            help={<ELBHelp />}
-        />
+        <>
+            <WelcomePopup serviceName="Elastic Load Balancing" />
+            <LabLayout
+                guide={<ELBLabGuide />}
+                console={<ELBConsole />}
+                terminal={<Terminal />}
+                help={<ELBHelp />}
+            />
+        </>
     );
 };
