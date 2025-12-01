@@ -23,8 +23,8 @@ export const LabLayout: React.FC<LabLayoutProps> = ({
             <header className="bg-aws-blue text-white px-6 py-4 shadow-lg">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-aws-orange rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-xl">AWS</span>
+                        <div className="w-10 h-10 flex items-center justify-center">
+                            <img src="/aws-logo.png" alt="AWS Logo" className="w-full h-full object-contain" />
                         </div>
                         <div>
                             <h1 className="text-xl font-bold">AWS Real-Life Simulator</h1>

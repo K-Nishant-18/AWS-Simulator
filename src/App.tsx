@@ -7,63 +7,68 @@ import { RDSLab } from './pages/RDSLab';
 import { Route53Lab } from './pages/Route53Lab';
 import { ELBLab } from './pages/ELBLab';
 import { NavCard } from './components/NavCard';
-import { Cloud, HardDrive, Server, Shield, Database, Globe, Network } from 'lucide-react';
+import { S3Icon, EC2Icon, IAMIcon, RDSIcon, Route53Icon, ELBIcon } from './components/ServiceIcons';
+import { Cloud } from 'lucide-react';
 
 const HomePage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-aws-blue via-gray-800 to-aws-dark flex items-center justify-center p-6">
-      <div className="max-w-4xl w-full">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-aws-orange rounded-2xl mb-6">
-            <Cloud size={48} className="text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-aws-blue via-gray-900 to-aws-dark flex items-center justify-center p-6">
+      <div className="max-w-6xl w-full">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-48 h-48 mb-0 transform hover:scale-105 transition-transform duration-500">
+            <img src="/aws-logo.png" alt="AWS Logo" className="w-full h-full object-contain drop-shadow-2xl" />
           </div>
-          <h1 className="text-5xl font-bold text-white mb-4">AWS Real-Life Simulator</h1>
-          <p className="text-xl text-gray-300">
-            Learn AWS hands-on with safe, sandboxed simulations
+          <h1 className="text-5xl font-extrabold text-white mb-6 tracking-tight">
+            Real AWS <span className="">Simulator</span>
+          </h1>
+          <p className="text-2xl text-gray-300 max-w-2xl mx-auto font-light">
+            Master the cloud with hands-on, risk-free simulations.
+            <br />
+            <span className="text-gray-400 text-lg mt-2 block">No account required. Zero cost.</span>
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
           <NavCard
-            title="S3: Static Website"
-            description="Host a static website with high availability and scalability."
+            title="S3: Object Storage"
+            description="Create buckets, upload objects, and host static websites with 99.999999999% durability."
             link="/s3"
-            icon={HardDrive}
+            icon={<S3Icon size={40} />}
             color="green"
           />
           <NavCard
-            title="EC2: Launch a Server"
-            description="Provision and manage virtual servers in the cloud."
+            title="EC2: Virtual Servers"
+            description="Launch secure, resizable compute capacity in the cloud. Configure security groups and networking."
             link="/ec2"
-            icon={Server}
+            icon={<EC2Icon size={40} />}
             color="orange"
           />
           <NavCard
-            title="IAM: Secure Your Account"
-            description="Manage users, groups, and permissions to secure your cloud environment."
+            title="IAM: Identity & Access"
+            description="Manage access to AWS services and resources securely. Create users, groups, and policies."
             link="/iam"
-            icon={Shield}
+            icon={<IAMIcon size={40} />}
             color="blue"
           />
           <NavCard
-            title="RDS: Launch a Database"
-            description="Provision a managed relational database (MySQL/Postgres)."
+            title="RDS: Managed Databases"
+            description="Set up, operate, and scale a relational database in the cloud with just a few clicks."
             link="/rds"
-            icon={Database}
+            icon={<RDSIcon size={40} />}
             color="purple"
           />
           <NavCard
-            title="Route 53: Custom Domain"
-            description="Manage DNS records and route traffic to your application."
+            title="Route 53: DNS Management"
+            description="Reliable and cost-effective cloud Domain Name System (DNS) web service."
             link="/route53"
-            icon={Globe}
+            icon={<Route53Icon size={40} />}
             color="orange"
           />
           <NavCard
-            title="ELB: Scale Your App"
-            description="Distribute traffic across multiple instances for high availability."
+            title="ELB: Load Balancing"
+            description="Automatically distribute incoming application traffic across multiple targets."
             link="/elb"
-            icon={Network}
+            icon={<ELBIcon size={40} />}
             color="blue"
           />
         </div>
