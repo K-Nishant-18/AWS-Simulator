@@ -11,19 +11,19 @@ import { S3Icon, EC2Icon, IAMIcon, RDSIcon, Route53Icon, ELBIcon } from './compo
 
 const HomePage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-aws-blue via-gray-900 to-aws-dark flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-aws-blue via-gray-900 to-aws-dark flex items-center justify-center p-4 md:p-6">
       <div className="max-w-6xl w-full">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-48 h-48 mb-0 transform hover:scale-105 transition-transform duration-500">
+        <div className="text-center mb-12 md:mb-16">
+          <div className="inline-flex items-center justify-center w-32 h-32 md:w-48 md:h-48 mb-4 md:mb-0 transform hover:scale-105 transition-transform duration-500">
             <img src="/aws-logo.png" alt="AWS Logo" className="w-full h-full object-contain drop-shadow-2xl" />
           </div>
-          <h1 className="text-5xl font-extrabold text-white mb-6 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 md:mb-6 tracking-tight">
             Real AWS <span className="">Simulator</span>
           </h1>
-          <p className="text-2xl text-gray-300 max-w-2xl mx-auto font-light">
+          <p className="text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto font-light px-4">
             Master the cloud with hands-on, risk-free simulations.
             <br />
-            <span className="text-gray-400 text-lg mt-2 block">No account required. Zero cost.</span>
+            <span className="text-gray-400 text-base md:text-lg mt-2 block">No account required. Zero cost.</span>
           </p>
         </div>
 

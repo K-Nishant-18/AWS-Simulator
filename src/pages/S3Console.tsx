@@ -38,7 +38,7 @@ export const S3Console: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">Amazon S3</h1>
                     <p className="text-gray-600 mt-1">Scalable storage in the cloud</p>
@@ -60,11 +60,11 @@ export const S3Console: React.FC = () => {
                             </Button>
                         </div>
                     ) : (
-                        <div className="space-y-2">
+                        <div className="space-y-2 overflow-x-auto">
                             {s3.buckets.map((bucket) => (
                                 <div
                                     key={bucket.name}
-                                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+                                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer min-w-[500px]"
                                     onClick={() => setSelectedBucket(bucket.name)}
                                 >
                                     <div className="flex-1">

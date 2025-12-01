@@ -38,7 +38,7 @@ export const EC2Console: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">EC2 Dashboard</h1>
                     <p className="text-gray-600 mt-1">Virtual Servers in the Cloud</p>
@@ -127,8 +127,8 @@ export const EC2Console: React.FC = () => {
                                         <td className="px-4 py-3 font-medium text-blue-600">{inst.instanceId}</td>
                                         <td className="px-4 py-3">
                                             <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${inst.state === 'running' ? 'bg-green-100 text-green-800' :
-                                                    inst.state === 'terminated' ? 'bg-red-100 text-red-800' :
-                                                        'bg-gray-100 text-gray-800'
+                                                inst.state === 'terminated' ? 'bg-red-100 text-red-800' :
+                                                    'bg-gray-100 text-gray-800'
                                                 }`}>
                                                 {inst.state}
                                             </span>
