@@ -1,6 +1,5 @@
 # ☁️ AWS Real-Life Simulator
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
@@ -59,56 +58,6 @@ The **AWS Real-Life Simulator** is a high-fidelity, browser-based educational to
 
 ---
 
-## 🛠️ Tech Stack
-
-- **Frontend Framework**: [React 18](https://react.dev/) with TypeScript
-- **Build Tool**: [Vite 5](https://vitejs.dev/) for lightning-fast development
-- **Styling**: [Tailwind CSS 3](https://tailwindcss.com/) with custom AWS theme
-- **State Management**: [Zustand](https://zustand-demo.pmnd.rs/) for global simulation state
-- **Routing**: [React Router](https://reactrouter.com/)
-- **Icons**: [Lucide React](https://lucide.dev/) + Custom AWS Service SVGs
-- **Diagrams**: [React Flow](https://reactflow.dev/) for architecture visualization
-
----
-
-## 🏁 Getting Started
-
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-
-### Installation
-
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/K-Nishant-18/AWS-Simulator.git
-    cd AWS-Simulator
-    ```
-
-2.  **Install dependencies**
-    ```bash
-    npm install
-    ```
-
-3.  **Start the development server**
-    ```bash
-    npm run dev
-    ```
-
-4.  **Open your browser**
-    ```
-    Navigate to http://localhost:5173
-    ```
-
-### Build for Production
-
-```bash
-npm run build
-```
-
-The optimized build will be in the `dist/` folder, ready for deployment.
-
----
 
 ## 📚 How to Use
 
@@ -121,26 +70,7 @@ The optimized build will be in the `dist/` folder, ready for deployment.
 
 ---
 
-## 🎨 Project Structure
 
-```
-AWS-Simulator/
-├── public/              # Static assets (AWS logos, icons)
-├── src/
-│   ├── components/      # Reusable UI components (Button, Card, Modal, etc.)
-│   ├── layouts/         # Layout components (LabLayout)
-│   ├── pages/           # Lab pages (S3Lab, EC2Lab, IAMConsole, etc.)
-│   ├── store/           # Zustand state management (simulationStore)
-│   ├── types/           # TypeScript type definitions
-│   ├── App.tsx          # Main app component with routing
-│   └── main.tsx         # Entry point
-├── index.html
-├── package.json
-├── tailwind.config.js   # Tailwind configuration with AWS theme
-└── vite.config.ts       # Vite configuration
-```
-
----
 
 ## 🔮 Roadmap (Phase 3)
 
@@ -167,23 +97,11 @@ Contributions are welcome! Whether it's bug fixes, new features, or documentatio
 
 ---
 
-## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **AWS** for creating the amazing cloud platform that inspired this project
-- **Google Antigravity** for accelerating the development process
-- The open-source community for incredible tools and libraries
-
----
 
 <div align="center">
   <p>Made with ❤️ by <a href="https://www.kumar-nishant.me/">KUMAR NISHANT</a> for Cloud Enthusiasts</p>
   <p>
-    <a href="https://github.com/K-Nishant-18/AWS-Simulator">⭐ Star this repo</a> if you found it helpful!
+   Do ⭐ <a href="https://github.com/K-Nishant-18/AWS-Simulator">Star this repo</a> if you found it helpful!
   </p>
 </div>
